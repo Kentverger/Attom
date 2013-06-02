@@ -31,7 +31,8 @@ public class SelectActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				Intent masterIntent = new Intent(SelectActivity.this, MasterActivity.class);
+				Intent masterIntent = new Intent(SelectActivity.this, MainActivity.class);
+				masterIntent.putExtra("master", true);
 				startActivity(masterIntent);
 			}
 		});

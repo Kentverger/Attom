@@ -7,13 +7,18 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.SyncStateContract.Constants;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -25,9 +30,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -56,6 +64,25 @@ public class MainActivity extends Activity {
 
 		prefs = getSharedPreferences(MainActivity.class.getSimpleName(), Context.MODE_PRIVATE);
 		setContentView(R.layout.activity_main);
+	
+		Intent i = getIntent();
+		
+		boolean master = i.getBooleanExtra("master", false);
+		
+		ImageButton btnShot = (ImageButton) findViewById(R.id.imageButton1);
+		
+		if(!master){
+			btnShot.setEnabled(false);
+		}
+		
+		btnShot.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				new SendShotRequest().execute();
+			}
+			
+		});
 
 		regid = prefs.getString(PROPERTY_REG_ID, null);
 		if (regid == null) {
@@ -94,11 +121,11 @@ public class MainActivity extends Activity {
 
 	public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 		private SurfaceHolder mHolder;
-		private Camera mCameraLocal;
+		private Camera mCamera;
 
 		public CameraPreview(Context context, Camera camera) {
 			super(context);
-			mCameraLocal = camera;
+			mCamera = camera;
 
 			mHolder = getHolder();
 			mHolder.addCallback(this);
@@ -107,8 +134,8 @@ public class MainActivity extends Activity {
 
 		public void surfaceCreated(SurfaceHolder holder) {
 			try {
-				mCameraLocal.setPreviewDisplay(holder);
-				mCameraLocal.startPreview();
+				mCamera.setPreviewDisplay(holder);
+				mCamera.startPreview();
 			} catch (IOException e) {
 				Log.d("ERROR", "Error setting camera preview: " + e.getMessage());
 			}
@@ -124,13 +151,13 @@ public class MainActivity extends Activity {
 			}
 
 			try {
-				mCameraLocal.stopPreview();
+				mCamera.stopPreview();
 			} catch (Exception e){
 			}
 
 			try {
-				mCameraLocal.setPreviewDisplay(mHolder);
-				mCameraLocal.startPreview();
+				mCamera.setPreviewDisplay(mHolder);
+				mCamera.startPreview();
 
 			} catch (Exception e){
 				Log.d("ERROR", "Error starting camera preview: " + e.getMessage());
@@ -227,6 +254,46 @@ public class MainActivity extends Activity {
 	private static File getDir() {
 		File sdDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 		return new File(sdDir, "CameraAPIDemo");
+	}
+
+	@Override
+	protected void onPause() {
+		stopPreviewAndFreeCamera();
+		super.onPause();
+	}
+	
+	private void stopPreviewAndFreeCamera() {
+
+	    if (mCamera != null) {
+	    	
+	        mCamera.stopPreview();
+	   
+	        mCamera.release();
+	    
+	        mCamera = null;
+	    }
+	}
+	
+	private class SendShotRequest extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+
+		    HttpClient httpclient = new DefaultHttpClient();
+		    HttpPost httppost = new HttpPost("http://www.sehacediseno.com.mx/gamititlan/GCM/");
+		    
+
+	        try {
+				HttpResponse response = httpclient.execute(httppost);
+			} catch (ClientProtocolException e) {
+				Log.d("ERROR", "Exterminar!!!!!!");
+			} catch (IOException e) {
+				Log.d("ERROR", "Exterminar!!!!!!");
+			}
+			
+			return null;
+		}
+		
 	}
 	
 }
