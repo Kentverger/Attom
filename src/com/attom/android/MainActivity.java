@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
 		
 		boolean master = i.getBooleanExtra("master", false);
 		
-		ImageButton btnShot = (ImageButton) findViewById(R.id.imageButton1);
+		ImageButton btnShot = (ImageButton) findViewById(R.id.bnt_master);
 		
 		if(!master){
 			btnShot.setEnabled(false);
