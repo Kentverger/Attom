@@ -1,16 +1,21 @@
 package com.attom.android;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -42,6 +47,7 @@ public class MainActivity extends Activity {
 
 	private static Camera mCamera;
 	private CameraPreview mPreview;
+	//private static UploadPhoto mUpload;
 
 	public static final String EXTRA_MESSAGE = "message";
 	public static final String PROPERTY_REG_ID = "registration_id";
@@ -74,6 +80,8 @@ public class MainActivity extends Activity {
 		if(!master){
 			btnShot.setEnabled(false);
 		}
+		
+		/*mUpload = new UploadPhoto();*/
 		
 		btnShot.setOnClickListener(new OnClickListener(){
 
@@ -235,13 +243,16 @@ public class MainActivity extends Activity {
 	        	            FileOutputStream fos = new FileOutputStream(pictureFile);
 	        	            fos.write(data);
 	        	            fos.close();
-	        	            Toast.makeText(ctx, "La foto se a guardado correctamente", Toast.LENGTH_LONG).show();
+	        	            
+	        	            /*mUpload.execute(filename);*/
+	        	            
 	        	            ctx.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ Environment.getExternalStorageDirectory())));
 	        	        } catch (FileNotFoundException e) {
 	        	            Log.d(TAG, "File not found: " + e.getMessage());
 	        	        } catch (IOException e) {
 	        	            Log.d(TAG, "Error accessing file: " + e.getMessage());
 	        	        }
+	        	       
 	        	    }
 	        	};
 	        	
@@ -253,7 +264,7 @@ public class MainActivity extends Activity {
 	}
 	private static File getDir() {
 		File sdDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-		return new File(sdDir, "CameraAPIDemo");
+		return new File(sdDir, "Attom");
 	}
 
 	@Override
@@ -280,7 +291,7 @@ public class MainActivity extends Activity {
 		protected Void doInBackground(Void... arg0) {
 
 		    HttpClient httpclient = new DefaultHttpClient();
-		    HttpPost httppost = new HttpPost("http://www.sehacediseno.com.mx/gamititlan/GCM/");
+		    HttpPost httppost = new HttpPost("http://sehacediseno.com.mx/gamititlan/GCM/photo.php");
 		    
 
 	        try {
@@ -295,5 +306,40 @@ public class MainActivity extends Activity {
 		}
 		
 	}
+	
+	/*public class UploadPhoto extends AsyncTask<String, Void, Void> {
+
+		@Override
+		protected Void doInBackground(String... arg0) {
+			
+		    HttpClient httpclient = new DefaultHttpClient();
+
+		    File file = new File(arg0[0]);
+		    
+			HttpPost httppost = new HttpPost("http://sehacediseno.com.mx/gamititlan/GCM/photo.php");
+
+		    InputStreamEntity reqEntity;
+			try {
+				reqEntity = new InputStreamEntity(new FileInputStream(file), -1);
+			    reqEntity.setContentType("binary/octet-stream");
+			    reqEntity.setChunked(true); // Send in multiple parts if needed
+			    httppost.setEntity(reqEntity);
+			    
+			    ResponseHandler<String> responseHandler=new BasicResponseHandler();
+			    String response = httpclient.execute(httppost, responseHandler);
+			    
+			    Log.d("response", response);
+			    
+			} catch (FileNotFoundException e) {
+				Log.d("ERROR", "Error subiendo la imagen " + e.getMessage());
+			} catch (ClientProtocolException e) {
+				Log.d("ERROR", "Error subiendo la imagen" + e.getMessage());
+			} catch (IOException e) {
+				Log.d("ERROR", "Error subiendo la imagen" + e.getMessage());
+			}
+			return null;
+		}
+		
+	}*/
 	
 }
