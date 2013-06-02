@@ -8,9 +8,20 @@
         android:minSdkVersion="10"
         android:targetSdkVersion="17" />
 
-    <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <permission
+        android:name="com.attom.android.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.attom.android.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -18,14 +29,33 @@
         android:label="@string/app_name"
         android:screenOrientation="landscape"
         android:theme="@style/AppTheme" >
+        <receiver
+            android:name="com.attom.android.MainActivity$GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.attom.android" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name="com.attom.android.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name="com.attom.android.SelectActivity"
+            android:label="@string/title_activity_select" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.attom.android.MasterActivity"
+            android:label="@string/title_activity_master" >
         </activity>
     </application>
 

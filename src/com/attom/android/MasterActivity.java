@@ -30,7 +30,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MasterActivity extends Activity {
 
 	private static Camera mCamera;
 	private CameraPreview mPreview;
@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
 
 
 		prefs = getSharedPreferences(MainActivity.class.getSimpleName(), Context.MODE_PRIVATE);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_master);
 
 		regid = prefs.getString(PROPERTY_REG_ID, null);
 		if (regid == null) {
@@ -67,16 +67,19 @@ public class MainActivity extends Activity {
 		gcm = GoogleCloudMessaging.getInstance(this);
 		
 
+		// Create an instance of Camera
 		mCamera = getCameraInstance();
 
+		// Create our Preview view and set it as the content of our activity.
 		mPreview = new CameraPreview(this, mCamera);
-		FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+		FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview_master);
 		preview.addView(mPreview);
 
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
@@ -92,6 +95,7 @@ public class MainActivity extends Activity {
 		return c;
 	}
 
+	/** A basic Camera preview class */
 	public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 		private SurfaceHolder mHolder;
 		private Camera mCameraLocal;
