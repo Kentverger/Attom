@@ -54,15 +54,14 @@ public final class R {
         public static final int texto_xhdpi=0x7f02001e;
     }
     public static final class id {
-        public static final int RelativeLayout1=0x7f080005;
-        public static final int action_settings=0x7f080009;
-        public static final int button1=0x7f080004;
+        public static final int RelativeLayout1=0x7f080004;
+        public static final int action_settings=0x7f080008;
         public static final int camera_preview=0x7f080001;
         public static final int camera_preview_master=0x7f080003;
         public static final int imageButton1=0x7f080002;
-        public static final int imageButton2=0x7f080008;
-        public static final int imageView1=0x7f080006;
-        public static final int imageView2=0x7f080007;
+        public static final int imageButton2=0x7f080007;
+        public static final int imageView1=0x7f080005;
+        public static final int imageView2=0x7f080006;
         public static final int layout_master=0x7f080000;
     }
     public static final class layout {

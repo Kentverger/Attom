@@ -4,17 +4,21 @@
     android:layout_height="fill_parent"
     android:orientation="horizontal" >
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/camera_preview_master"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:layout_weight="1" >
-    </FrameLayout>
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/shot" />
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/boton_cam" />
+    </RelativeLayout>
 
 </RelativeLayout>
