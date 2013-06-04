@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class SelectActivity extends Activity {
 
@@ -15,10 +16,10 @@ public class SelectActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.main);
+		setContentView(R.layout.activity_select);
 		
-		Button btnMaster = (Button) findViewById(R.id.btn_master);
-		Button btnSlave = (Button) findViewById(R.id.btn_slave);
+		ImageButton btnMaster = (ImageButton) findViewById(R.id.btn_master);
+		ImageButton btnSlave = (ImageButton) findViewById(R.id.btn_slave);
 		
 		btnSlave.setOnClickListener(new OnClickListener(){
 

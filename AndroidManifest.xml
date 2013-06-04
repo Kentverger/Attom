@@ -41,12 +41,11 @@
 
         <activity
             android:name="com.attom.android.MainActivity"
-            android:label="@string/app_name"
             android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.attom.android.SelectActivity"
-            android:label="@string/title_activity_select" >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
